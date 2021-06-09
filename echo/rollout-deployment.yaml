@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  annotations:
+    getambassador.io/rolloutId: 0fc42141-f84b-4371-995b-77d3cb66c658
+  creationTimestamp: null
+  name: echo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: echo
+  strategy:
+    canary:
+      canaryService: echo-canary
+      stableService: echo
+      steps:
+      - setWeight: 10
+      - pause:
+          duration: 3
+      - setWeight: 20
+      - pause:
+          duration: 3
+      - setWeight: 30
+      - pause:
+          duration: 3
+      - setWeight: 40
+      - pause:
+          duration: 3
+      - setWeight: 50
+      - pause:
+          duration: 3
+      - setWeight: 60
+      - pause:
+          duration: 3
+      - setWeight: 70
+      - pause:
+          duration: 3
+      - setWeight: 80
+      - pause:
+          duration: 3
+      - setWeight: 90
+      - pause:
+          duration: 3
+      - setWeight: 100
+      - pause:
+          duration: 3
+      trafficRouting:
+        ambassador:
+          mappings:
+          - echo
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: echo
+    spec:
+      containers:
+      - args:
+        - -text=Successful Argo deployment!
+        - -listen=:8080
+        image: hashicorp/http-echo:latest
+        imagePullPolicy: Always
+        name: echo
+        ports:
+        - containerPort: 8080
+        resources: {}
+status:
+  blueGreen: {}
+  canary: {}
