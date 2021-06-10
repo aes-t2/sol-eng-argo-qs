@@ -2,11 +2,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   annotations:
-    getambassador.io/rolloutId: 80035b56-d718-441d-ac72-3d468c31ab6d
+    getambassador.io/rolloutId: 7342d75f-ebb7-4180-98b1-1a9ac65207bd
   creationTimestamp: null
   name: echo
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: echo
@@ -15,12 +15,36 @@ spec:
       canaryService: echo-canary
       stableService: echo
       steps:
+      - setWeight: 10
+      - pause:
+          duration: 12
+      - setWeight: 20
+      - pause:
+          duration: 12
+      - setWeight: 30
+      - pause:
+          duration: 12
+      - setWeight: 40
+      - pause:
+          duration: 12
       - setWeight: 50
       - pause:
-          duration: 30
+          duration: 12
+      - setWeight: 60
+      - pause:
+          duration: 12
+      - setWeight: 70
+      - pause:
+          duration: 12
+      - setWeight: 80
+      - pause:
+          duration: 12
+      - setWeight: 90
+      - pause:
+          duration: 12
       - setWeight: 100
       - pause:
-          duration: 30
+          duration: 12
       trafficRouting:
         ambassador:
           mappings:
